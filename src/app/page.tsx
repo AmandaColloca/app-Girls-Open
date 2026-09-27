@@ -18,9 +18,11 @@ export default async function Inicio() {
         <div className="quadra-linhas" aria-hidden="true" />
         <h1>{NOME_DO_TORNEIO}</h1>
       </header>
-    <p>
+
+      <p>
         Fase de grupos: {disputados} de {jogos.length || 24} jogos disputados
-    </p>
+      </p>
+
       <Avisos erros={erros} />
 
       {ultimos.length > 0 && (
@@ -39,8 +41,12 @@ export default async function Inicio() {
       )}
 
       <div className="legenda">
-        <span className="marca marca-diamante" /> 1ª e 2ª vão para a Chave Diamante
-        <span className="marca marca-perola" /> 3ª e 4ª vão para a Chave Pérola
+        <div>
+          <span className="marca marca-diamante" /> 1ª e 2ª vão para a Chave Diamante
+        </div>
+        <div>
+          <span className="marca marca-perola" /> 3ª e 4ª vão para a Chave Pérola
+        </div>
       </div>
 
       <div className="grade-grupos">
