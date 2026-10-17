@@ -15,6 +15,7 @@ export interface Jogo {
   wo: "A" | "B" | "";
   vencedora: string;
   observacoes: string;
+  data: string; // DD-MM-AAAA, coluna R
 }
 
 /** Uma linha de um grupo na aba "Classificação". */

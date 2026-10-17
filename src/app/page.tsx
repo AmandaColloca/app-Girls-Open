@@ -10,7 +10,16 @@ export default async function Inicio() {
   const { grupos, erros } = await carregarGrupos();
   const jogos = grupos.flatMap((g) => g.jogos);
   const disputados = jogos.filter((j) => j.vencedora).length;
-  const ultimos = jogos.filter((j) => j.vencedora).slice(-3).reverse();
+  const quando = (d: string) => {
+    const [dia, mes, ano] = d.split("-").map(Number);
+    return new Date(ano < 100 ? ano + 2000 : ano, mes - 1, dia).getTime();
+  }
+  const ultimos = jogos
+    .map((j, ordem) => ({ j, ordem }))
+    .filter(({ j }) => j.vencedora)
+    .sort((a, b) => quando(b.j.data) - quando(a.j.data) || b.ordem - a.ordem)
+    .slice(0, 3)
+    .map(({ j }) => j);
 
   return (
     <>
