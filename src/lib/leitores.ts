@@ -54,6 +54,7 @@ export function lerJogos(t: Tabela): Jogo[] {
       wo: wo === "A" || wo === "B" ? wo : "",
       vencedora: cel(t, i, "L"),
       observacoes: cel(t, i, "Q"),
+      data: cel(t, i, "R"), // DD-MM-AAAA
     });
   }
   return jogos;
