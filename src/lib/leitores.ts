@@ -122,6 +122,16 @@ function lerPartida(t: Tabela, rotulo: string): Partida {
   };
 }
 
+/** "Bye" ocupa vaga de uma jogadora desclassificada */
+export const ehBye = (nome: string) => nome.toLowerCase() === "bye";
+
+/** Se um dos lados é bye, a outra jogadora avança */
+function resolverBye(p: Partida): Partida {
+  if (p.vencedora) return p;
+  if (ehBye(p.jogadoraA) && p.jogadoraB && !ehBye(p.jogadoraB)) return { ...p, vencedora: p.jogadoraB };
+  if (ehBye(p.jogadoraB) && p.jogadoraA && !ehBye(p.jogadoraA)) return { ...p, vencedora: p.jogadoraA };
+  return p;
+}
 export function lerChave(t: Tabela, id: ChaveId): Chave {
   const cabecalho = acharLinha(t, "A", "Nº");
   const classificadas: Chave["classificadas"] = [];
@@ -129,21 +139,21 @@ export function lerChave(t: Tabela, id: ChaveId): Chave {
     classificadas.push({ origem: cel(t, i, "B"), jogadora: nome(t, i, "C") });
   }
 
-  // A final fica na mesma linha da SF1, colunas K a N.
+  const quartas = ["QF1", "QF2", "QF3", "QF4"].map((r) => resolverBye(lerPartida(t, r)));
+  const semis = ["SF1", "SF2"].map((r, i) => {
+    const s = lerPartida(t, r);
+    return resolverBye({ ...s, jogadoraA: quartas[i * 2].vencedora, jogadoraB: quartas[i * 2 + 1].vencedora });
+  });
   const linhaFinal = acharLinha(t, "E", "SF1");
-  return {
-    id,
-    classificadas,
-    quartas: ["QF1", "QF2", "QF3", "QF4"].map((r) => lerPartida(t, r)),
-    semis: ["SF1", "SF2"].map((r) => lerPartida(t, r)),
-    final: {
-      rotulo: "Final",
-      jogadoraA: nome(t, linhaFinal, "K"),
-      jogadoraB: nome(t, linhaFinal, "L"),
-      placar: cel(t, linhaFinal, "M"),
-      vencedora: nome(t, linhaFinal, "N"),
-    },
-  };
+  const final = resolverBye({
+    rotulo: "Final",
+    jogadoraA: nome(t, linhaFinal, "K") || semis[0].vencedora,
+    jogadoraB: nome(t, linhaFinal, "L") || semis[1].vencedora,
+    placar: cel(t, linhaFinal, "M"),
+    vencedora: nome(t, linhaFinal, "N"),
+  });
+
+  return { id, classificadas, quartas, semis, final };
 }
 
 // ---------- Pontuação ----------

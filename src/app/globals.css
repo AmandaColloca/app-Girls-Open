@@ -207,8 +207,9 @@ h2 { font-size: 1.4rem; }
 .chaveamento {
   display: grid;
   grid-template-columns: repeat(3, minmax(11rem, 1fr));
-  gap: 1rem;
-  min-width: 36rem;
+  grid-template-rows: auto repeat(4, minmax(0, 1fr));
+  gap: 0.75rem 1.5rem;
+  min-width: 38rem;
   border-top: 4px solid var(--diamante);
   background: var(--diamante-fundo);
   border-radius: 6px;
@@ -216,8 +217,15 @@ h2 { font-size: 1.4rem; }
   margin-bottom: 1rem;
 }
 .chaveamento.chave-perola { border-top-color: var(--perola); background: var(--perola-fundo); }
-.rodada { display: flex; flex-direction: column; justify-content: space-around; gap: 0.75rem; }
-.rodada h3 { font-family: var(--fonte-corpo), sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--tinta-suave); }
+.chaveamento h3 {
+  font-family: var(--fonte-corpo), sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--tinta-suave);
+  align-self: end;
+}
+.celula { display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; }
+
 .partida {
   display: grid;
   gap: 0.15rem;
